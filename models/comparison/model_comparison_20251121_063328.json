@@ -1,0 +1,22 @@
+{
+  "LightGBM (no odds)": {
+    "top1_accuracy": 0.12,
+    "top3_hit_rate": 0.76,
+    "total_races": 25
+  },
+  "Conditional Logit (with odds)": {
+    "top1_accuracy": 0.44,
+    "top3_hit_rate": 0.64,
+    "total_races": 25
+  },
+  "Transformer + Attention": {
+    "top1_accuracy": 1.0,
+    "top3_hit_rate": 0.0,
+    "total_races": 25
+  },
+  "Hybrid Fusion (CombMNZ)": {
+    "top1_accuracy": 0.12,
+    "top3_hit_rate": 0.8,
+    "total_races": 25
+  }
+}

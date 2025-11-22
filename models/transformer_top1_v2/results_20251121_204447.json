@@ -1,0 +1,5 @@
+{
+  "test_top1_accuracy": 0.28,
+  "test_top3_hit_rate": 0.96,
+  "total_races": 25
+}

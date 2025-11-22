@@ -1,0 +1,29 @@
+{
+  "weights": {
+    "lgbm": 0.6,
+    "transformer": 0.4
+  },
+  "results": {
+    "weighted": {
+      "top1": 0.2,
+      "top3": 0.8
+    },
+    "max": {
+      "top1": 0.32,
+      "top3": 0.8
+    },
+    "rank": {
+      "top1": 0.2,
+      "top3": 0.84
+    },
+    "lgbm_only": {
+      "top1": 0.12,
+      "top3": 0.76
+    },
+    "transformer_only": {
+      "top1": 0.28,
+      "top3": 0.96
+    }
+  },
+  "total_races": 25
+}

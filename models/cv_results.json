@@ -1,0 +1,104 @@
+{
+  "features": [
+    "distance",
+    "weight",
+    "age",
+    "track_type_encoded",
+    "track_condition_encoded",
+    "weather_encoded",
+    "sex_encoded",
+    "distance_category_encoded",
+    "track_combined_encoded",
+    "jockey_win_rate",
+    "jockey_top3_rate",
+    "jockey_track_win_rate",
+    "horse_win_rate",
+    "horse_top3_rate",
+    "horse_dist_win_rate",
+    "horse_race_count",
+    "field_size",
+    "race_avg_odds",
+    "popularity_rank",
+    "odds",
+    "year",
+    "month",
+    "day_of_week",
+    "time_seconds"
+  ],
+  "params": {
+    "objective": "lambdarank",
+    "metric": "ndcg",
+    "ndcg_eval_at": [
+      1,
+      3,
+      5
+    ],
+    "boosting_type": "gbdt",
+    "num_leaves": 31,
+    "learning_rate": 0.05,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 5,
+    "verbose": -1,
+    "min_data_in_leaf": 20,
+    "max_depth": 7
+  },
+  "n_splits": 5,
+  "cv_results": {
+    "train_ndcg@1": [
+      0.8340710473326758,
+      0.8364285675779418,
+      0.6597700357087093,
+      0.7689383341569431,
+      0.9002158985577031
+    ],
+    "train_ndcg@3": [
+      0.8218968562478147,
+      0.8274495624576247,
+      0.7194801660216595,
+      0.7768518569233114,
+      0.8887088050163027
+    ],
+    "train_ndcg@5": [
+      0.8558375788593564,
+      0.8528353221827577,
+      0.771387448315393,
+      0.8134609709118111,
+      0.9069287215999379
+    ],
+    "val_ndcg@1": [
+      0.48274771375805187,
+      0.6149370708667762,
+      0.5810224283433875,
+      0.5556400046966061,
+      0.5891355603997895
+    ],
+    "val_ndcg@3": [
+      0.5759097337491185,
+      0.6912271661219418,
+      0.6163203268312145,
+      0.5980378748249595,
+      0.6214726544664985
+    ],
+    "val_ndcg@5": [
+      0.6359239338110156,
+      0.7424201050834943,
+      0.6722109784371216,
+      0.6786769904238189,
+      0.6876409715756987
+    ],
+    "best_iterations": [
+      20.0,
+      25.0,
+      5.0,
+      10.0,
+      49.0
+    ]
+  },
+  "best_fold": 2,
+  "summary": {
+    "val_ndcg@1_mean": 0.5646965556129222,
+    "val_ndcg@3_mean": 0.6205935511987466,
+    "val_ndcg@5_mean": 0.6833745958662298
+  }
+}

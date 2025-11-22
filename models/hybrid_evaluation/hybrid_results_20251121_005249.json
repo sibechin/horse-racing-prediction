@@ -1,0 +1,62 @@
+[
+  {
+    "method": "固定重み（均等）",
+    "weights": {
+      "lightgbm": 0.5,
+      "statistical": 0.5
+    },
+    "metrics": {
+      "ndcg@1": 0.6976969844483001,
+      "ndcg@3": 0.712152975831252,
+      "top1_accuracy": 0.366,
+      "top3_hit_rate": 0.472,
+      "total_races": 500
+    }
+  },
+  {
+    "method": "固定重み（LightGBM 70%）",
+    "weights": {
+      "lightgbm": 0.7,
+      "statistical": 0.3
+    },
+    "metrics": {
+      "ndcg@1": 0.6976969844483001,
+      "ndcg@3": 0.712152975831252,
+      "top1_accuracy": 0.366,
+      "top3_hit_rate": 0.472,
+      "total_races": 500
+    }
+  },
+  {
+    "method": "固定重み（Statistical 70%）",
+    "weights": {
+      "lightgbm": 0.3,
+      "statistical": 0.7
+    },
+    "metrics": {
+      "ndcg@1": 0.6976969844483001,
+      "ndcg@3": 0.712152975831252,
+      "top1_accuracy": 0.366,
+      "top3_hit_rate": 0.472,
+      "total_races": 500
+    }
+  },
+  {
+    "method": "Dynamic Alpha Tuning",
+    "weights": {
+      "lightgbm": 0.5,
+      "statistical": 0.5
+    },
+    "metrics": {
+      "ndcg@1": 0.6976969844483001,
+      "ndcg@3": 0.712152975831252,
+      "top1_accuracy": 0.366,
+      "top3_hit_rate": 0.472,
+      "total_races": 500,
+      "avg_dat_weights": {
+        "lightgbm": 0.43483886024434104,
+        "statistical": 0.565161139755659
+      }
+    }
+  }
+]

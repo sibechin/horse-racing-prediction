@@ -1,0 +1,196 @@
+# 最適化された競馬予測モデル設定
+# LambdaRank中心のランキング学習アプローチ
+
+data_collection:
+  # JRA-VAN Data Lab からデータ取得を推奨
+  source: "jravan"  # "jravan" or "netkeiba"
+  data_dir: "data/raw/jravan"
+  start_year: 2018
+  end_year: 2024
+
+  # netkeibaを使う場合の設定（非推奨）
+  netkeiba:
+    base_url: "https://db.netkeiba.com"
+    delay_between_requests: 3
+    max_retries: 3
+
+preprocessing:
+  missing_value_threshold: 0.3
+  outlier_method: "iqr"
+  train_test_split: 0.15  # テストデータ15%
+  validation_split: 0.15   # 検証データ15%
+  random_seed: 42
+
+features:
+  # 馬の特徴量
+  horse_features:
+    - "age"
+    - "sex"
+    - "weight"
+    - "weight_change"
+    - "horse_weight"
+    - "weight_burden_ratio"  # 斤量/馬体重
+    - "weight_change_ratio"  # 体重変化率
+    - "past_3_avg_position"  # 過去3戦平均着順
+    - "past_5_avg_position"
+    - "past_10_avg_position"
+    - "past_3_wins"
+    - "past_5_wins"
+    - "recent_best_position"
+    - "distance_aptitude"    # 距離適性
+    - "track_aptitude"       # 馬場適性
+    - "same_distance_avg"    # 同距離での平均着順
+    - "same_track_avg"       # 同馬場での平均着順
+    - "days_since_last_race" # レース間隔
+    - "consecutive_races"    # 連続出走回数
+
+  # 騎手の特徴量
+  jockey_features:
+    - "jockey_win_rate"
+    - "jockey_place_rate"
+    - "jockey_avg_position"
+    - "jockey_recent_form"   # 直近の成績
+
+  # 調教師の特徴量
+  trainer_features:
+    - "trainer_win_rate"
+    - "trainer_place_rate"
+    - "trainer_avg_position"
+
+  # レース条件の特徴量
+  race_features:
+    - "distance"
+    - "distance_category"    # 短距離/マイル/中距離/長距離
+    - "track_type"           # 芝/ダート
+    - "track_type_encoded"
+    - "track_condition"      # 良/稍重/重/不良
+    - "track_condition_encoded"
+    - "weather"
+    - "weather_encoded"
+    - "course_name"
+    - "field_size"           # 出走頭数
+    - "race_grade"           # G1/G2/G3/OP/etc
+
+  # 相互作用特徴量
+  interaction_features:
+    - "jockey_trainer_combo"
+    - "combo_avg_position"
+    - "distance_condition_interaction"
+    - "popularity_weight_interaction"
+    - "popularity_odds_ratio"
+
+models:
+  # ランキング学習モデル（最優先）
+  ranking:
+    lightgbm_lambdarank:
+      objective: "lambdarank"
+      metric: "ndcg"
+      ndcg_eval_at: [1, 3, 5]
+      max_depth: 8
+      learning_rate: 0.01
+      num_leaves: 64
+      feature_fraction: 0.8
+      bagging_fraction: 0.8
+      bagging_freq: 5
+      min_data_in_leaf: 20
+      label_gain: [0, 7, 5, 3, 2, 1.5, 1, 0.5, 0.3, 0.2, 0.1, 0, 0, 0, 0, 0, 0, 0]
+      # 1位=7, 2位=5, 3位=3...と上位ほど重要度を高く設定
+
+    xgboost_rank:
+      objective: "rank:pairwise"
+      eval_metric: "ndcg"
+      max_depth: 8
+      eta: 0.01
+      subsample: 0.8
+      colsample_bytree: 0.8
+      min_child_weight: 10
+
+  # 統計モデル（補助）
+  statistical:
+    lightgbm_multiclass:
+      objective: "multiclass"
+      num_class: 18
+      metric: "multi_logloss"
+      max_depth: 8
+      learning_rate: 0.01
+      num_leaves: 64
+
+    xgboost_multiclass:
+      objective: "multi:softprob"
+      num_class: 18
+      eval_metric: "mlogloss"
+      max_depth: 8
+      learning_rate: 0.01
+      subsample: 0.8
+      colsample_bytree: 0.8
+
+    catboost:
+      loss_function: "MultiClass"
+      iterations: 3000
+      learning_rate: 0.01
+      depth: 8
+      l2_leaf_reg: 3
+
+  # アンサンブル設定
+  ensemble:
+    method: "weighted_average"  # "weighted_average" or "stacking"
+    weights:
+      lightgbm_lambdarank: 0.50  # ランキング学習を最重視
+      xgboost_rank: 0.25
+      lightgbm_multiclass: 0.15
+      xgboost_multiclass: 0.10
+
+training:
+  # ランキング学習用
+  ranking_learning:
+    num_boost_round: 3000
+    early_stopping_rounds: 100
+    verbose_eval: 100
+
+  # 通常の訓練
+  standard:
+    batch_size: 256
+    epochs: 100
+    early_stopping_patience: 15
+    learning_rate: 0.001
+    optimizer: "adam"
+
+evaluation:
+  metrics:
+    # ランキング評価指標
+    - "ndcg@1"      # 1位的中率（NDCG）
+    - "ndcg@3"      # 3着以内の精度
+    - "ndcg@5"      # 5着以内の精度
+    - "hit_rate@1"  # 1位的中率
+    - "hit_rate@3"  # 3着以内的中率
+
+    # 従来の評価指標
+    - "accuracy"
+    - "top3_accuracy"
+    - "mae"
+    - "rmse"
+
+  cross_validation_folds: 5
+
+# 特徴量エンジニアリングの優先度
+feature_engineering_priority:
+  - "time_index"           # タイム指数（最重要）
+  - "pace_index"           # ペース指数
+  - "class_index"          # クラス指数
+  - "jockey_trainer_combo" # 騎手×調教師の相性
+  - "pedigree_score"       # 血統スコア
+  - "track_bias_adjustment" # 馬場傾向補正
+  - "weight_for_age"       # 馬齢重量
+
+# ハイパーパラメータ最適化（Optuna）
+hyperparameter_optimization:
+  enabled: true
+  n_trials: 100
+  timeout: 3600  # 1時間
+  optimization_metric: "ndcg@3"
+
+# モデル解釈性
+interpretability:
+  feature_importance: true
+  shap_analysis: true      # SHAP値による特徴量の影響分析
+  partial_dependence: true # 部分依存プロット

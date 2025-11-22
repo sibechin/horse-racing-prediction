@@ -1,0 +1,115 @@
+{
+  "timestamp": "2025-11-18T22:22:01.818586",
+  "model": "LightGBM 7-Fold Ensemble",
+  "test_period": "2025 G1 Races (5 races)",
+  "summary": {
+    "total_races": 5,
+    "top1_accuracy": 0.0,
+    "top3_accuracy": 0.0,
+    "mean_ndcg@1": 0.0,
+    "top1_correct_count": 0,
+    "top3_correct_count": 0
+  },
+  "details": [
+    {
+      "race_name": 202505010811,
+      "race_id": 202505010811,
+      "horses": 16,
+      "predicted_winner": "ミトノオー",
+      "actual_winner": "コスタノヴァ",
+      "top1_correct": false,
+      "top3_correct": false,
+      "ndcg@1": 0.0,
+      "predicted_top3": [
+        "ミトノオー",
+        "アンモシエラ",
+        "ヘリオス"
+      ],
+      "actual_top3": [
+        "コスタノヴァ",
+        "サンライズジパング",
+        "ミッキーファイト"
+      ]
+    },
+    {
+      "race_name": 202505021211,
+      "race_id": 202505021211,
+      "horses": 18,
+      "predicted_winner": "ホウオウアートマン",
+      "actual_winner": "クロワデュノール",
+      "top1_correct": false,
+      "top3_correct": false,
+      "ndcg@1": 0.0,
+      "predicted_top3": [
+        "ホウオウアートマン",
+        "ニシノエージェント",
+        "ファウストラーゼン"
+      ],
+      "actual_top3": [
+        "クロワデュノール",
+        "マスカレードボール",
+        "ショウヘイ"
+      ]
+    },
+    {
+      "race_name": 202505030211,
+      "race_id": 202505030211,
+      "horses": 18,
+      "predicted_winner": "グラティアス",
+      "actual_winner": "ジャンタルマンタル",
+      "top1_correct": false,
+      "top3_correct": false,
+      "ndcg@1": 0.0,
+      "predicted_top3": [
+        "グラティアス",
+        "ダディーズビビッド",
+        "レッドモンレーヴ"
+      ],
+      "actual_top3": [
+        "ジャンタルマンタル",
+        "ガイアフォース",
+        "ソウルラッシュ"
+      ]
+    },
+    {
+      "race_name": 202506030811,
+      "race_id": 202506030811,
+      "horses": 18,
+      "predicted_winner": "ドラゴンブースト",
+      "actual_winner": "ミュージアムマイル",
+      "top1_correct": false,
+      "top3_correct": false,
+      "ndcg@1": 0.0,
+      "predicted_top3": [
+        "ドラゴンブースト",
+        "ピコチャンブラック",
+        "フクノブルーレイク"
+      ],
+      "actual_top3": [
+        "ミュージアムマイル",
+        "クロワデュノール",
+        "マスカレードボール"
+      ]
+    },
+    {
+      "race_name": 202509020611,
+      "race_id": 202509020611,
+      "horses": 18,
+      "predicted_winner": "ミストレス",
+      "actual_winner": "エンブロイダリー",
+      "top1_correct": false,
+      "top3_correct": false,
+      "ndcg@1": 0.0,
+      "predicted_top3": [
+        "ミストレス",
+        "トワイライトシティ",
+        "ダンツエラン"
+      ],
+      "actual_top3": [
+        "エンブロイダリー",
+        "アルマヴェローチェ",
+        "リンクスティップ"
+      ]
+    }
+  ]
+}

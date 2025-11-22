@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-11-18T18:05:16.532143",
+  "weights": {
+    "lightgbm": 0.7,
+    "conditional_logit": 0.15,
+    "elo_rating": 0.1,
+    "odds": 0.05
+  },
+  "performance": {
+    "top1_accuracy": 0.0,
+    "top3_accuracy": 0.0213903743315508,
+    "ndcg@1": 0.0,
+    "total_races": 374
+  },
+  "components": {
+    "lightgbm_models": 7,
+    "conditional_logit": "trained",
+    "elo_ratings": 4092
+  }
+}

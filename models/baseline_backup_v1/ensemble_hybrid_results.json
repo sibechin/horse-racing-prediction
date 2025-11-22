@@ -1,0 +1,63 @@
+{
+  "model_type": "ensemble_hybrid",
+  "ensemble_models": 5,
+  "hybrid_weights": {
+    "lightgbm_ensemble": 0.5,
+    "odds_probability": 0.2,
+    "statistical_score": 0.15,
+    "logistic_regression": 0.15
+  },
+  "accuracy_metrics": {
+    "top1_accuracy": {
+      "ensemble": 0.9117647058823529,
+      "hybrid": 0.09411764705882353,
+      "odds_only": 0.3352941176470588
+    },
+    "top3_accuracy": {
+      "ensemble": 0.8343777976723367,
+      "hybrid": 0.10980392156862745,
+      "odds_only": 0.5395894428152492
+    }
+  },
+  "data_stats": {
+    "total_records": 4270,
+    "total_races": 340,
+    "features_used": [
+      "distance",
+      "weight",
+      "age",
+      "track_type_encoded",
+      "track_condition_encoded",
+      "weather_encoded",
+      "sex_encoded",
+      "distance_category_encoded",
+      "track_combined_encoded",
+      "jockey_win_rate",
+      "jockey_top3_rate",
+      "jockey_track_win_rate",
+      "horse_win_rate",
+      "horse_top3_rate",
+      "horse_dist_win_rate",
+      "horse_race_count",
+      "field_size",
+      "race_avg_odds",
+      "popularity_rank",
+      "odds",
+      "year",
+      "month",
+      "day_of_week",
+      "time_seconds"
+    ],
+    "statistical_features": [
+      "jockey_win_rate",
+      "jockey_top3_rate",
+      "horse_win_rate",
+      "horse_top3_rate",
+      "odds",
+      "popularity_rank",
+      "weight",
+      "age",
+      "field_size"
+    ]
+  }
+}

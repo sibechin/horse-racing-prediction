@@ -1,0 +1,109 @@
+# Horse Racing Prediction Configuration
+
+data_collection:
+  base_url: "https://db.netkeiba.com"
+  start_year: 2020
+  end_year: 2024
+  race_types:
+    - "中央競馬"  # JRA Central Racing
+  delay_between_requests: 2  # seconds
+  max_retries: 3
+
+preprocessing:
+  missing_value_threshold: 0.3  # Drop columns with >30% missing values
+  outlier_method: "iqr"  # or "zscore"
+  train_test_split: 0.2
+  validation_split: 0.1
+  random_seed: 42
+
+features:
+  horse_features:
+    - "age"
+    - "sex"
+    - "weight"
+    - "weight_change"
+    - "past_wins"
+    - "past_places"
+    - "avg_finish_position"
+    - "recent_form"  # Last 3 races
+    - "distance_aptitude"
+    - "track_aptitude"
+
+  jockey_features:
+    - "jockey_win_rate"
+    - "jockey_place_rate"
+    - "jockey_avg_position"
+    - "jockey_experience"
+
+  trainer_features:
+    - "trainer_win_rate"
+    - "trainer_place_rate"
+    - "trainer_avg_position"
+
+  race_features:
+    - "distance"
+    - "track_type"  # 芝/ダート
+    - "track_condition"  # 良/稍重/重/不良
+    - "weather"
+    - "course_name"
+    - "grade"  # G1/G2/G3/OP/etc
+    - "field_size"  # Number of horses
+
+models:
+  statistical:
+    xgboost:
+      n_estimators: 1000
+      max_depth: 8
+      learning_rate: 0.01
+      subsample: 0.8
+      colsample_bytree: 0.8
+      objective: "multi:softprob"  # For ranking
+      eval_metric: "mlogloss"
+
+    lightgbm:
+      n_estimators: 1000
+      max_depth: 8
+      learning_rate: 0.01
+      num_leaves: 31
+      objective: "multiclass"
+      metric: "multi_logloss"
+
+  deep_learning:
+    lstm:
+      hidden_size: 128
+      num_layers: 2
+      dropout: 0.3
+      bidirectional: true
+      sequence_length: 5  # Last 5 races
+
+    transformer:
+      d_model: 128
+      nhead: 8
+      num_layers: 3
+      dim_feedforward: 512
+      dropout: 0.1
+
+  ensemble:
+    method: "weighted_average"  # or "stacking"
+    weights:
+      xgboost: 0.3
+      lightgbm: 0.3
+      lstm: 0.2
+      transformer: 0.2
+
+training:
+  batch_size: 256
+  epochs: 100
+  early_stopping_patience: 15
+  learning_rate: 0.001
+  optimizer: "adam"
+  scheduler: "reduce_on_plateau"
+
+evaluation:
+  metrics:
+    - "accuracy"
+    - "top3_accuracy"
+    - "mae"
+    - "rmse"
+    - "ndcg"  # Normalized Discounted Cumulative Gain
+  cross_validation_folds: 5

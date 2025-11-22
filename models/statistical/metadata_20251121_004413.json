@@ -1,0 +1,29 @@
+{
+  "trained_at": "2025-11-21T00:44:15.375229",
+  "training_data": "data\\processed\\keibalab_g1_2000_2024_processed.csv",
+  "num_records": 56618,
+  "num_races": 3011,
+  "models": {
+    "conditional_logit": {
+      "path": "models\\statistical\\conditional_logit_20251121_004413.pkl",
+      "features": [
+        "odds",
+        "popularity_rank",
+        "weight",
+        "age",
+        "jockey_win_rate",
+        "horse_win_rate",
+        "distance",
+        "track_type_encoded",
+        "track_condition_encoded",
+        "weather_encoded"
+      ]
+    },
+    "elo_rating": {
+      "path": "models\\statistical\\elo_rating_20251121_004413.pkl",
+      "k": 15,
+      "initial_rating": 1500,
+      "num_horses": 0
+    }
+  }
+}

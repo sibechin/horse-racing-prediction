@@ -1,0 +1,17 @@
+{
+  "dat": {
+    "top1_accuracy": 0.12,
+    "top3_hit_rate": 0.76,
+    "total_races": 25
+  },
+  "combmnz": {
+    "top1_accuracy": 0.12,
+    "top3_hit_rate": 0.8,
+    "total_races": 25
+  },
+  "equal": {
+    "top1_accuracy": 0.12,
+    "top3_hit_rate": 0.76,
+    "total_races": 25
+  }
+}

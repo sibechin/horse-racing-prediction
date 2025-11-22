@@ -1,0 +1,135 @@
+{
+  "method": "refined_optimization",
+  "optuna_n_trials": 500,
+  "search_space": "narrowed around previous optimum",
+  "objective": "weighted NDCG (0.3*@1 + 0.5*@3 + 0.2*@5)",
+  "optuna_best_params": {
+    "num_leaves": 94,
+    "max_depth": 6,
+    "learning_rate": 0.001246590409914333,
+    "feature_fraction": 0.8566344387791068,
+    "bagging_fraction": 0.9751219913273587,
+    "bagging_freq": 6,
+    "min_data_in_leaf": 10,
+    "lambda_l1": 1.1171621754354086,
+    "lambda_l2": 7.944163422694866,
+    "min_gain_to_split": 1.6539660758221133
+  },
+  "optuna_best_weighted_score": 0.6444139330751816,
+  "features": [
+    "distance",
+    "weight",
+    "age",
+    "track_type_encoded",
+    "track_condition_encoded",
+    "weather_encoded",
+    "sex_encoded",
+    "distance_category_encoded",
+    "track_combined_encoded",
+    "jockey_win_rate",
+    "jockey_top3_rate",
+    "jockey_track_win_rate",
+    "horse_win_rate",
+    "horse_top3_rate",
+    "horse_dist_win_rate",
+    "horse_race_count",
+    "field_size",
+    "race_avg_odds",
+    "popularity_rank",
+    "odds",
+    "year",
+    "month",
+    "day_of_week",
+    "time_seconds"
+  ],
+  "final_params": {
+    "objective": "lambdarank",
+    "metric": "ndcg",
+    "ndcg_eval_at": [
+      1,
+      3,
+      5
+    ],
+    "boosting_type": "gbdt",
+    "verbose": -1,
+    "num_leaves": 94,
+    "max_depth": 6,
+    "learning_rate": 0.001246590409914333,
+    "feature_fraction": 0.8566344387791068,
+    "bagging_fraction": 0.9751219913273587,
+    "bagging_freq": 6,
+    "min_data_in_leaf": 10,
+    "lambda_l1": 1.1171621754354086,
+    "lambda_l2": 7.944163422694866,
+    "min_gain_to_split": 1.6539660758221133
+  },
+  "n_splits": 5,
+  "cv_results": {
+    "train_ndcg@1": [
+      0.6331033735268932,
+      0.5607734366923895,
+      0.6159500648900892,
+      0.6235291746705346,
+      0.6012938420083578
+    ],
+    "train_ndcg@3": [
+      0.6803550333882051,
+      0.6153684513648578,
+      0.6569579129399373,
+      0.6650431234024196,
+      0.6701584831492399
+    ],
+    "train_ndcg@5": [
+      0.7363202692001336,
+      0.6783355716606867,
+      0.717150135351071,
+      0.7298063354320845,
+      0.7358605937767979
+    ],
+    "val_ndcg@1": [
+      0.519504996211639,
+      0.6798983397579245,
+      0.5891391510661077,
+      0.575815085767477,
+      0.7224970716801764
+    ],
+    "val_ndcg@3": [
+      0.5757055652989271,
+      0.695356639292332,
+      0.6133781122079845,
+      0.6041994378514347,
+      0.7071187948391051
+    ],
+    "val_ndcg@5": [
+      0.6522711801179424,
+      0.7507110287187774,
+      0.6841498232756243,
+      0.66278616477508,
+      0.740751789542671
+    ],
+    "best_iterations": [
+      2.0,
+      2.0,
+      2.0,
+      10.0,
+      2.0
+    ]
+  },
+  "best_fold": 5,
+  "summary": {
+    "val_ndcg@1_mean": 0.6173709288966649,
+    "val_ndcg@3_mean": 0.6391517098979567,
+    "val_ndcg@5_mean": 0.6981339972860189
+  },
+  "comparison": {
+    "previous_ndcg@1": 0.6025322794524889,
+    "refined_ndcg@1": 0.6173709288966649,
+    "improvement_ndcg@1_percent": 2.4627144387450324,
+    "previous_ndcg@3": 0.6351366118673771,
+    "refined_ndcg@3": 0.6391517098979567,
+    "improvement_ndcg@3_percent": 0.6321629009505008,
+    "previous_ndcg@5": 0.6862931104381135,
+    "refined_ndcg@5": 0.6981339972860189,
+    "improvement_ndcg@5_percent": 1.7253396060389508
+  }
+}

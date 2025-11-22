@@ -1,0 +1,83 @@
+[
+  {
+    "method": "固定重み（均等）",
+    "weights": [
+      0.5,
+      0.5
+    ],
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  },
+  {
+    "method": "固定重み（LightGBM 70%）",
+    "weights": [
+      0.7,
+      0.3
+    ],
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  },
+  {
+    "method": "固定重み（Statistical 70%）",
+    "weights": [
+      0.3,
+      0.7
+    ],
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  },
+  {
+    "method": "CombMNZ正規化",
+    "weights": "N/A (CombMNZ)",
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  },
+  {
+    "method": "PSO最適化",
+    "weights": [
+      0.6645106710043436,
+      0.33548932899565637
+    ],
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  },
+  {
+    "method": "Tabu Search最適化",
+    "weights": [
+      0.5,
+      0.5
+    ],
+    "metrics": {
+      "ndcg@1": 0.6931578947368421,
+      "ndcg@3": 0.7261149064625764,
+      "top1_accuracy": 0.44,
+      "top3_hit_rate": 0.64,
+      "total_races": 25
+    }
+  }
+]

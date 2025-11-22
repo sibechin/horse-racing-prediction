@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-11-19T04:37:23.151583",
+  "model": "PyTorch Ranking Neural Network",
+  "architecture": "[29] -> [128] -> [64] -> [32] -> [1]",
+  "loss_function": "Pairwise Ranking Loss",
+  "optimizer": "Adam (lr=0.001, weight_decay=1e-5)",
+  "training_data": "G1 Races 2016-2024 (~1,900 records, 102 races)",
+  "n_folds": 5,
+  "device": "cpu"
+}

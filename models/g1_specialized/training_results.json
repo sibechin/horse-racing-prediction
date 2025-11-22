@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-11-19T03:21:57.075052",
+  "model": "LightGBM LambdaRank (G1 Specialized)",
+  "training_data": "G1 Races 2016-2024 (~1,900 records, 102 races)",
+  "n_trials": 50,
+  "best_cv_ndcg@1": 0.01,
+  "best_params": {
+    "learning_rate": 0.006907803691475429,
+    "num_leaves": 16,
+    "max_depth": 8,
+    "min_data_in_leaf": 22,
+    "lambda_l1": 5.085706911647028,
+    "lambda_l2": 9.07566473926093,
+    "feature_fraction": 0.6246461145744375,
+    "bagging_fraction": 0.7051914615178149,
+    "bagging_freq": 8,
+    "min_gain_to_split": 0.22879816549162246,
+    "num_boost_round": 69
+  },
+  "n_models": 5
+}

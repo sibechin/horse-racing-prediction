@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>競馬予測システム - AI Ranking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .input-panel, .results-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 150px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .rankings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .rankings-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .rankings-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .rankings-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+        }
+
+        .rank-1 { background: #FFD700; color: #333; }
+        .rank-2 { background: #C0C0C0; color: #333; }
+        .rank-3 { background: #CD7F32; color: white; }
+        .rank-other { background: #667eea; }
+
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            border-radius: 8px;
+            padding: 15px;
+            color: #c00;
+            margin-top: 20px;
+        }
+
+        .example-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1000px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏇 競馬予測システム</h1>
+            <p class="subtitle">LightGBM LambdaRank - 高精度AI予測モデル</p>
+        </header>
+
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">91.2%</div>
+                <div class="stat-label">Top1精度</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">83.4%</div>
+                <div class="stat-label">Top3精度</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.618</div>
+                <div class="stat-label">NDCG@1</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">5 Folds</div>
+                <div class="stat-label">アンサンブル</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="input-panel">
+                <h2>レース情報入力</h2>
+
+                <div class="form-group">
+                    <label for="raceData">レースデータ (JSON形式)</label>
+                    <textarea id="raceData" placeholder='[
+  {
+    "horse_name": "ウマ1",
+    "horse_number": 1,
+    "jockey_name": "騎手A",
+    "odds": 3.5,
+    "weight": 480,
+    "popularity": 2,
+    "age": 4,
+    "sex": "M",
+    "distance": 2000,
+    ...
+  },
+  ...
+]'></textarea>
+                    <a href="#" class="example-link" onclick="loadExample(); return false;">📝 サンプルデータを読み込む</a>
+                </div>
+
+                <button onclick="predictRace()">🚀 予測実行</button>
+
+                <div id="error" class="error" style="display: none;"></div>
+            </div>
+
+            <div class="results-panel">
+                <h2>予測結果</h2>
+                <div id="results">
+                    <p style="color: #999; text-align: center; padding: 40px;">
+                        レースデータを入力して「予測実行」をクリックしてください
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        // 統計情報読み込み
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+
+                const statsHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${(data.model_accuracy.top1 * 100).toFixed(1)}%</div>
+                        <div class="stat-label">Top1精度</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${(data.model_accuracy.top3 * 100).toFixed(1)}%</div>
+                        <div class="stat-label">Top3精度</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.model_accuracy['ndcg@1'].toFixed(3)}</div>
+                        <div class="stat-label">NDCG@1</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.total_races_trained}</div>
+                        <div class="stat-label">学習レース数</div>
+                    </div>
+                `;
+
+                document.getElementById('stats-grid').innerHTML = statsHTML;
+            } catch (error) {
+                console.error('統計情報読み込みエラー:', error);
+            }
+        }
+
+        // サンプルデータ読み込み
+        function loadExample() {
+            const exampleData = [
+                {
+                    "horse_name": "サンプルホース1",
+                    "horse_number": 1,
+                    "jockey_name": "武豊",
+                    "odds": 3.5,
+                    "weight": 480,
+                    "popularity": 2,
+                    "age": 4,
+                    "sex_encoded": 1,
+                    "distance": 2000,
+                    "track_type_encoded": 1,
+                    "horse_win_rate": 0.25,
+                    "jockey_win_rate": 0.20
+                },
+                {
+                    "horse_name": "サンプルホース2",
+                    "horse_number": 2,
+                    "jockey_name": "川田将雅",
+                    "odds": 5.2,
+                    "weight": 475,
+                    "popularity": 3,
+                    "age": 3,
+                    "sex_encoded": 1,
+                    "distance": 2000,
+                    "track_type_encoded": 1,
+                    "horse_win_rate": 0.18,
+                    "jockey_win_rate": 0.22
+                }
+            ];
+
+            document.getElementById('raceData').value = JSON.stringify(exampleData, null, 2);
+        }
+
+        // レース予測
+        async function predictRace() {
+            const raceDataText = document.getElementById('raceData').value;
+            const errorDiv = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+
+            errorDiv.style.display = 'none';
+
+            if (!raceDataText.trim()) {
+                errorDiv.textContent = 'レースデータを入力してください';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const raceData = JSON.parse(raceDataText);
+
+                resultsDiv.innerHTML = '<div class="loading">予測中</div>';
+
+                const response = await fetch(`${API_BASE}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ race_data: raceData })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`予測エラー: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                displayRankings(result.rankings);
+
+            } catch (error) {
+                errorDiv.textContent = `エラー: ${error.message}`;
+                errorDiv.style.display = 'block';
+                resultsDiv.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">予測に失敗しました</p>';
+            }
+        }
+
+        // ランキング表示
+        function displayRankings(rankings) {
+            const maxScore = Math.max(...rankings.map(r => r.prediction_score));
+
+            let html = `
+                <table class="rankings-table">
+                    <thead>
+                        <tr>
+                            <th>順位</th>
+                            <th>馬番</th>
+                            <th>馬名</th>
+                            <th>騎手</th>
+                            <th>オッズ</th>
+                            <th>予測スコア</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            rankings.forEach(horse => {
+                const rankClass = horse.rank <= 3 ? `rank-${horse.rank}` : 'rank-other';
+                const scorePercent = (horse.prediction_score / maxScore) * 100;
+
+                html += `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${horse.rank}</span></td>
+                        <td><strong>${horse.horse_number}</strong></td>
+                        <td>${horse.horse_name}</td>
+                        <td>${horse.jockey_name}</td>
+                        <td>${horse.odds.toFixed(1)}倍</td>
+                        <td>
+                            ${horse.prediction_score.toFixed(4)}
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${scorePercent}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('results').innerHTML = html;
+        }
+
+        // 初期化
+        window.addEventListener('load', () => {
+            loadStats();
+        });
+    </script>
+</body>
+</html>

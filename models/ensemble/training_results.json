@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-11-19T03:55:46.279420",
+  "models": [
+    "XGBoost",
+    "CatBoost",
+    "Random Forest",
+    "LightGBM"
+  ],
+  "ensemble_method": "Simple Average",
+  "training_data": "G1 Races 2016-2024 (~1,900 records, 102 races)",
+  "n_folds": 5
+}
